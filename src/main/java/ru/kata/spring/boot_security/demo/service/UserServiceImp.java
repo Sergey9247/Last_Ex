@@ -1,8 +1,9 @@
 package ru.kata.spring.boot_security.demo.service;
 
-import com.example.springbootdemo.model.User;
-import com.example.springbootdemo.repository.UserRepository;
+
 import org.springframework.stereotype.Service;
+import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 import java.util.List;
 @Service
