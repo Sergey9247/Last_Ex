@@ -1,8 +1,10 @@
 package ru.kata.spring.boot_security.demo.service;
 
 
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface UserService {
@@ -16,4 +18,8 @@ public interface UserService {
     public void deleteById(long id);
 
     void updateUser(User user);
+
+    public List<Role> findRoles();
+
+    public User findByUsername(String username);
 }
