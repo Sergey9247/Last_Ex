@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.repository.RoleRepository;
+import ru.kata.spring.boot_security.demo.service.RolesServiceImp;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import java.util.List;
@@ -14,11 +14,11 @@ import java.util.List;
 public class AdminController {
 
     private final UserServiceImpl userService;
-    private final RoleRepository roleRepository;
+    private final RolesServiceImp rolesServiceImp;
 
-    public AdminController(UserServiceImpl userService, RoleRepository roleRepository) {
+    public AdminController(UserServiceImpl userService, RolesServiceImp rolesServiceImp) {
         this.userService = userService;
-        this.roleRepository = roleRepository;
+        this.rolesServiceImp = rolesServiceImp;
     }
 
     @GetMapping()
@@ -30,7 +30,7 @@ public class AdminController {
 
     @GetMapping("/create")
     public String createUserForm(Model model) {
-        model.addAttribute("roles", roleRepository.findAll());
+        model.addAttribute("roles", rolesServiceImp.getRoles());
         model.addAttribute("user", new User());
         return "create";
     }
@@ -50,7 +50,7 @@ public class AdminController {
 
     @GetMapping("{id}/update")
     public String updateUserForm(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("roles", roleRepository.findAll());
+        model.addAttribute("roles", rolesServiceImp.getRoles());
         model.addAttribute("user", userService.findById(id));
         return "/update";
     }

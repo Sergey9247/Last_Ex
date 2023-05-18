@@ -19,7 +19,6 @@ public interface UserService {
 
     void updateUser(User user);
 
-    public List<Role> findRoles();
 
     public User findByUsername(String username);
 }

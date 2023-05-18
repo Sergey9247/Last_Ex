@@ -13,8 +13,18 @@
 
     <label for="name">Name</label>
     <input type="text" placeholder="name" th:field="*{username}" id="name"/>
+    <br>
     <label for="password">Password</label>
     <input type="text" placeholder="password" th:field="*{password}" id="password"/>
+    <br>
+    <label for="age">Age</label>
+    <input type="text" placeholder="age" th:field="*{age}" id="age"/>
+    <br>
+    <label for="email">Email</label>
+    <input type="text" placeholder="email" th:field="*{email}" id="email"/>
+    <br>
+
+
     <select class="form-control" id="roles" name="roles" multiple="multiple" >
         <option th:each="role : ${roles}"
                 th:selected="${role.roleName}"

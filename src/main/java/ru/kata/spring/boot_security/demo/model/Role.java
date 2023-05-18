@@ -10,7 +10,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "roles")
-@Data
 public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,18 +18,14 @@ public class Role implements GrantedAuthority {
     private String roleName;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "users_roles",
+    @JoinTable(
+            name = "users_roles",
             joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
     private Set<User> users;
 
     public Role() {
-
-    }
-
-    @Override
-    public String getAuthority() {
-        return roleName;
     }
 
     public Role(long id, String roleName, Set<User> users) {
@@ -62,6 +57,10 @@ public class Role implements GrantedAuthority {
     public void setUsers(Set<User> users) {
         this.users = users;
     }
+    @Override
+    public String getAuthority() {
+        return roleName;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -78,8 +77,7 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String toString() {
-        return "Role : " + roleName;
+        return "Role: " + roleName;
     }
-
 
 }
