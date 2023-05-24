@@ -7,7 +7,16 @@
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 
 </head>
+
 <body>
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container-fluid">
+    <h4 th:text="${user.getUsername()} + '  With Roles:  ' +  ${#strings.replace(#strings.replace(user.roles.toString(), '[', ''), ']', '')}" class="navbar-brand">USER</h4>
+    <a href="/logout">
+      <button type="button" class="btn btn-secondary">logout</button>
+    </a>
+  </div>
+</nav>
 
 <table class="table table">
   <thead>
@@ -27,7 +36,11 @@
 
     <td th:text="${user.id}"></td>
     <td th:text="${user.username}"></td>
-    <td th:text="${user.roles}"></td>
+    <th>
+      <div th:each="role : ${user.roles}">
+        <p th:text="${role.toString()}"></p>
+      </div>
+    </th>
     <td th:text="${user.age}"></td>
     <td th:text="${user.email}"></td>
 
@@ -35,12 +48,12 @@
     <td>
 
       <a th:href="@{/admin/{id}/update(id=${user.id})}">
-        <input type="button" value="Edit"/>
+        <input type="button" class="btn btn-primary" value="Edit"/>
 
       </a>
     <td>
       <form th:method="DELETE" th:action="@{admin/{id}/delete(id=${user.getId()})}">
-        <input type="submit" value="Delete">
+        <input type="submit" class="btn btn-danger" value="Delete">
 
       </form>
     </td>
