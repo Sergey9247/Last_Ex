@@ -23,15 +23,15 @@ public class User implements UserDetails {
     private long id;
 
     @Column
-    private String username;
-
+    private String firstname;
+    @Column
+    private String lastname;
     @Column
     private String password;
     @Column
-    private String email;
-
-    @Column
     private int age;
+    @Column(unique = true)
+    private String username;
 
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -44,11 +44,12 @@ public class User implements UserDetails {
 
     }
 
-    public User( String username, String password, String email, int age, Set<Role> roles) {
-        this.username = username;
+    public User(String firstname, String lastname, String password, int age, String username, Set<Role> roles) {
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.password = password;
-        this.email = email;
         this.age = age;
+        this.username = username;
         this.roles = roles;
     }
 
@@ -58,6 +59,31 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public long getId() {
@@ -80,28 +106,13 @@ public class User implements UserDetails {
         this.password = passwordEncoder().encode(password);
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
     @Override
     public String getPassword() {
         return this.password;
     }
 
     @Override
+    @Transactional
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
     }
@@ -142,17 +153,5 @@ public class User implements UserDetails {
     @Override
     public int hashCode() {
         return Objects.hash(id, username, password, roles);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", age=" + age +
-                ", roles=" + roles +
-                '}';
     }
 }

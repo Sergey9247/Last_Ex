@@ -19,10 +19,9 @@ public class UserController {
         this.userService = userService;
     }
     @GetMapping()
-    public String indexUser(Model model, Principal principal) {
+    public String getUser(Model model, Principal principal) {
         User user = userService.findByUsername(principal.getName());
         model.addAttribute("user", user);
         return "user";
     }
-
 }

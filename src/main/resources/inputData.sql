@@ -1,7 +1,7 @@
-insert into users ( username, password,email,age)
-values ('user', '$2a$12$TbxRZQrMK/TRlZEcss20IuNEgZVseNxUJs5O//tO8DfvKDMMTUu7i','user@gmail.com',20); -- password "100"
-insert into users ( username, password,email,age)
-values ('admin', '$2a$12$TbxRZQrMK/TRlZEcss20IuNEgZVseNxUJs5O//tO8DfvKDMMTUu7i','admin@gamil.com',60); -- password "100"
+insert into users ( firstname, lastname, password,age,  username)
+values ('Sergey','Makarov','$2a$12$3tlIDKO49EFNVjrQY4mI3.o8P.q/gkwVSgMa.Ve50zvhKoNF9eiae',35,'user@gmail.com');--password 111
+insert into users ( firstname, lastname, password,age, username)
+values ('Ivan','Petrov','$2a$12$.Vx.tUTsD0MRrMNp87BdWurko0g98Lz2DHnuMVI8CjRXcQCH4Vuoa',30,'admin@gmail.com');--password 123
 
 insert into roles (role_name) value ('ROLE_USER');
 insert into roles (role_name) value ('ROLE_ADMIN');

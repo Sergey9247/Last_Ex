@@ -17,11 +17,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SuccessUserHandler successUserHandler;
     private final UserServiceImpl userServiceImpl;
 
-    @Autowired
-    public WebSecurityConfig(SuccessUserHandler successUserHandler,UserServiceImpl userServiceImpl1) {
-        this.successUserHandler = successUserHandler;
 
-        this.userServiceImpl = userServiceImpl1;
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserServiceImpl userServiceImpl) {
+        this.successUserHandler = successUserHandler;
+        this.userServiceImpl = userServiceImpl;
     }
 
     @Override
@@ -50,6 +49,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationProvider.setUserDetailsService(userServiceImpl);
         return authenticationProvider;
     }
-
-
 }
