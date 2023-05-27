@@ -15,7 +15,7 @@
                 <span class="navbar-brand">
                     <strong th:text="${user.getUsername()}"></strong>
                     <span>
-                        <a th:text="' with roles: ' + ${#strings.setJoin(#authentication.getAuthorities(), ' ')}"></a>
+                        <a th:text="' with roles: ' + ${#strings.setJoin(user.roles, ', ')}"></a>
                     </span>
                 </span>
     </div>

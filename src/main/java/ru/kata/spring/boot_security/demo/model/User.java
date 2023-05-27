@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.model;
 
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,6 +37,7 @@ public class User implements UserDetails {
 
 
     @ManyToMany(fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -70,6 +73,14 @@ public class User implements UserDetails {
         this.firstname = firstname;
     }
 
+    public String getStringRole(){
+        StringBuilder result = new StringBuilder();
+        for (Role r : this.roles){
+            result.append(r.toString()).append("      ");
+        }
+        return result.toString();
+    }
+
     public String getLastname() {
         return lastname;
     }
@@ -98,12 +109,8 @@ public class User implements UserDetails {
         this.username = username;
     }
 
-    private PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
     public void setPassword(String password) {
-        this.password = passwordEncoder().encode(password);
+        this.password = password;
     }
 
     @Override

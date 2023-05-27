@@ -24,6 +24,7 @@ public class AdminController {
 
     @GetMapping()
     public String createUserForm(Model model) {
+        model.addAttribute("authUser", userService.findOne());
         model.addAttribute("allUsers", userService.getListOfUsers());
         model.addAttribute("allRoles", roleRepository.findAll());
         model.addAttribute("newUser", new User());
