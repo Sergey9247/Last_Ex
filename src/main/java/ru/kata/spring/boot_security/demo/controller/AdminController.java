@@ -1,16 +1,21 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/adminProfile")
 public class AdminController {
     private final UserService userService;
     private final RoleRepository roleRepository;
@@ -23,36 +28,50 @@ public class AdminController {
 
 
     @GetMapping()
-    public String createUserForm(Model model) {
-        model.addAttribute("authUser", userService.findOne());
-        model.addAttribute("allUsers", userService.getListOfUsers());
-        model.addAttribute("allRoles", roleRepository.findAll());
-        model.addAttribute("newUser", new User());
-        return "admin";
+    public ResponseEntity<List<User>> getAllUsers() {
+        return new ResponseEntity<>(userService.getListOfUsers(), HttpStatus.OK);
     }
 
-    @PostMapping()
-    public String createUser(@ModelAttribute("user") User user) {
+    @GetMapping("/roles")
+    public ResponseEntity<List<Role>> getAllRoles() {
+        return new ResponseEntity<>(roleRepository.findAll(), HttpStatus.OK);
+    }
+
+    @PostMapping("/newUser")
+    public ResponseEntity<User> createUser(User user) {
         userService.saveUser(user);
-        return "redirect:/admin";
+        return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("{id}")
-    public String deleteUser(@PathVariable("id") Long id) {
-        userService.deleteUser(id);
-        return "redirect:/admin";
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
+        try {
+            userService.deleteUser(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/{id}/update")
-    public String updateUserForm(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("roles", roleRepository.findAll());
-        model.addAttribute("user", userService.getUserById(id));
-        return "/update";
+    public ResponseEntity<Map<String, Object>> updateUserForm(@PathVariable("id") Long id) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("roles", roleRepository.findAll());
+        response.put("user", userService.getUserById(id));
+        return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/{id}")
-    public String updateUser(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
+    public ResponseEntity<User> updateUser(@RequestBody User user) {
         userService.saveUser(user);
-        return "redirect:/admin";
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUser(@PathVariable("id") Long id) {
+        User user = userService.getUserById(id);
+        return user != null
+                ? new ResponseEntity<>(user, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

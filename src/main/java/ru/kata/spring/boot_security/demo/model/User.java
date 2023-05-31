@@ -1,15 +1,17 @@
 package ru.kata.spring.boot_security.demo.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
@@ -56,6 +58,7 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+    @JsonManagedReference
     public Set<Role> getRoles() {
         return roles;
     }
@@ -71,14 +74,6 @@ public class User implements UserDetails {
 
     public void setFirstname(String firstname) {
         this.firstname = firstname;
-    }
-
-    public String getStringRole(){
-        StringBuilder result = new StringBuilder();
-        for (Role r : this.roles){
-            result.append(r.toString()).append("      ");
-        }
-        return result.toString();
     }
 
     public String getLastname() {
@@ -109,8 +104,12 @@ public class User implements UserDetails {
         this.username = username;
     }
 
+    private PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     public void setPassword(String password) {
-        this.password = password;
+        this.password = passwordEncoder().encode(password);
     }
 
     @Override
@@ -120,6 +119,7 @@ public class User implements UserDetails {
 
     @Override
     @Transactional
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
     }
@@ -130,21 +130,25 @@ public class User implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return true;
     }
@@ -161,4 +165,5 @@ public class User implements UserDetails {
     public int hashCode() {
         return Objects.hash(id, username, password, roles);
     }
+
 }
