@@ -10,19 +10,20 @@
 </head>
 
 <body>
+<!--navbar-->
 <nav class="navbar navbar-expand-xl navbar-dark bg-dark">
     <div class="container-fluid mr-auto">
                 <span class="navbar-brand">
-                    <strong th:text="${user.getUsername()}"></strong>
-                    <span>
-                        <a th:text="' with roles: ' + ${#strings.setJoin(user.roles, ', ')}"></a>
-                    </span>
+                    <strong id="header-username"></strong>
+                    <a> with roles: </a>
+                    <a id="header-roles"></a>
                 </span>
     </div>
     <span class="nav-item ms-auto">
-        <a href="/logout">
-      <button type="button" class="btn btn-secondary">logout</button>
-    </a>
+        <form th:action="@{/logout}" method="POST">
+
+            <input type="submit" class="btn btn-link text-secondary" value="Logout"/>
+        </form>
     </span>
 </nav>
 <!--sidebar+tabs-->
@@ -31,12 +32,10 @@
         <div class="col-2 pr-0 pt-3">
             <ul class="list-group list-group-flush">
                 <a sec:authorize="hasRole('ROLE_ADMIN')" th:text="Admin" th:href="@{/admin}"
-                   th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
                    class="list-group-item list-group-item-action"></a>
                 <a sec:authorize="hasRole('ROLE_USER')" th:text="User" th:href="@{/user}"
-                   th:classappend="${#authorization.expression('hasRole(''ROLE_USER'')') ? 'active' : ''}"
-                   class="list-group-item list-group-item-action active"
-                   th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}"></a>
+
+                   class="list-group-item list-group-item-action active"></a>
             </ul>
         </div>
         <div class="col-10 m-0 bg-light ">
@@ -65,16 +64,7 @@
                                             <th>Role</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td th:utext="${user.id}"></td>
-                                            <td th:utext="${user.firstname}"></td>
-                                            <td th:utext="${user.lastname}"></td>
-                                            <td th:utext="${user.age}"></td>
-                                            <td th:utext="${user.username}"></td>
-                                            <td th:utext="${#strings.setJoin(user.roles, ' ')}"></td>
-                                        </tr>
-                                        </tbody>
+                                        <tbody id="user-panel-tbody"></tbody>
                                     </table>
                                 </div>
                             </div>
@@ -87,6 +77,8 @@
 </div>
 
 
+
+
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
@@ -96,6 +88,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-
+<script type="text/javascript" src = "/user.js"></script>
 </body>
 </html>
