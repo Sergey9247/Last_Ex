@@ -19,23 +19,6 @@ public class Role implements GrantedAuthority {
 
     private String roleName;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @Fetch(FetchMode.JOIN)
-    @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-
-    @JsonBackReference
-    private Set<User> users;
-
-    public Role() {
-
-    }
-
-    public Role(String roleName, Set<User> users) {
-        this.roleName = roleName;
-        this.users = users;
-    }
     @Override
     public String getAuthority() {
         return getRoleName();
@@ -57,13 +40,6 @@ public class Role implements GrantedAuthority {
         this.roleName = roleName;
     }
 
-    public Set<User> getUsers() {
-        return users;
-    }
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -79,6 +55,9 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String toString() {
-        return roleName;
+        return "Role : " + roleName;
     }
+
+
 }
+

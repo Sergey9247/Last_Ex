@@ -58,7 +58,6 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    @JsonManagedReference
     public Set<Role> getRoles() {
         return roles;
     }
@@ -104,12 +103,9 @@ public class User implements UserDetails {
         this.username = username;
     }
 
-    private PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     public void setPassword(String password) {
-        this.password = passwordEncoder().encode(password);
+        this.password = password;
     }
 
     @Override

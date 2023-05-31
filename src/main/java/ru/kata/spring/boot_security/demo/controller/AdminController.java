@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/adminProfile")
 public class AdminController {
     private final UserService userService;
@@ -26,7 +26,6 @@ public class AdminController {
         this.roleRepository = roleRepository;
     }
 
-
     @GetMapping()
     public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<>(userService.getListOfUsers(), HttpStatus.OK);
@@ -37,13 +36,14 @@ public class AdminController {
         return new ResponseEntity<>(roleRepository.findAll(), HttpStatus.OK);
     }
 
+
     @PostMapping("/newUser")
-    public ResponseEntity<User> createUser(User user) {
+    public ResponseEntity<User> createUser(@RequestBody User user) {
         userService.saveUser(user);
         return ResponseEntity.ok(user);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
         try {
             userService.deleteUser(id);
